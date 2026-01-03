@@ -119,13 +119,27 @@ function renderCheckout() {
   list.innerHTML = cart
     .map((i) => {
       const p = PRODUCTS.find((p) => p.id === i.id);
+      if (!p) return "";
+
       const subtotal = p.price * i.qty;
       total += subtotal;
 
       return `
-      <div class="d-flex justify-content-between border-bottom py-2">
-        <div>${p.name} (x${i.qty})</div>
-        <div>Rp ${subtotal.toLocaleString()}</div>
+      <div class="d-flex align-items-center justify-content-between border-bottom py-2">
+        <div class="d-flex align-items-center gap-3">
+          <img src="${p.image}"
+               alt="${p.name}"
+               width="50"
+               height="50"
+               class="rounded object-fit-cover">
+          <div>
+            <div class="fw-semibold">${p.name}</div>
+            <small class="text-muted">Qty: ${i.qty}</small>
+          </div>
+        </div>
+        <div class="fw-semibold">
+          Rp ${subtotal.toLocaleString()}
+        </div>
       </div>
     `;
     })
@@ -134,7 +148,67 @@ function renderCheckout() {
   totalEl.textContent = "Rp " + total.toLocaleString();
 }
 
+// function renderCheckout() {
+//   const list = document.getElementById("checkout-cart");
+//   const totalEl = document.getElementById("checkout-total");
+//   if (!list || !totalEl) return;
+
+//   const cart = getCart();
+//   let total = 0;
+
+//   list.innerHTML = cart
+//     .map((i) => {
+//       const p = PRODUCTS.find((p) => p.id === i.id);
+//       const subtotal = p.price * i.qty;
+//       total += subtotal;
+
+//       return `
+//       <div class="d-flex justify-content-between border-bottom py-2">
+//         <div>${p.name} (x${i.qty})</div>
+//         <div>Rp ${subtotal.toLocaleString()}</div>
+//       </div>
+//     `;
+//     })
+//     .join("");
+
+//   totalEl.textContent = "Rp " + total.toLocaleString();
+// }
+
 // INIT
 renderCartTable();
 renderCheckout();
 updateCartBadge();
+
+function submitOrder(e) {
+  e.preventDefault();
+
+  if (!document.getElementById("agree-terms").checked) {
+    alert("Anda harus menyetujui Terms of Use");
+    return;
+  }
+
+  const cart = getCart();
+  if (cart.length === 0) {
+    alert("Keranjang kosong");
+    return;
+  }
+
+  const order = {
+    customer: {
+      name: document.getElementById("cust-name").value,
+      email: document.getElementById("cust-email").value,
+      phone: document.getElementById("cust-phone").value,
+      address: document.getElementById("cust-address").value || "-",
+      marketingConsent: document.getElementById("agree-marketing").checked,
+    },
+    items: cart,
+    date: new Date().toISOString(),
+  };
+
+  console.log("ORDER:", order);
+
+  alert("Pesanan berhasil dibuat!");
+  localStorage.removeItem("cart");
+  updateCartBadge();
+  location.href = "index.php";
+}
