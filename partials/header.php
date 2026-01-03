@@ -12,7 +12,7 @@
 
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
 <nav class="navbar navbar-dark bg-dark fixed-top">
   <div class="container">

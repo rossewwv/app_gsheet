@@ -13,45 +13,23 @@ const PRODUCTS = [
   },
 ];
 
-function getCart() {
-  return JSON.parse(localStorage.getItem("cart")) || [];
-}
-
-function saveCart(cart) {
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
-
-function addToCart(id) {
-  const cart = getCart();
-  const item = cart.find((i) => i.id === id);
-  item ? item.qty++ : cart.push({ id, qty: 1 });
-  saveCart(cart);
-  updateCartBadge();
-  alert("Produk ditambahkan");
-}
-
-function updateCartBadge() {
-  const badge = document.getElementById("cart-badge");
-  if (!badge) return;
-  const total = getCart().reduce((s, i) => s + i.qty, 0);
-  badge.textContent = total;
-  badge.classList.toggle("d-none", total === 0);
-}
-
+// =========================
+// RENDER HOME (INDEX)
+// =========================
 function renderProducts() {
   const el = document.getElementById("product-list");
   if (!el) return;
+
   el.innerHTML = PRODUCTS.map(
     (p) => `
     <div class="col-md-4 mb-4">
-      <div class="card">
+      <div class="card h-100">
         <img src="${p.image}" class="card-img-top">
-        <div class="card-body">
+        <div class="card-body d-flex flex-column">
           <h5>${p.name}</h5>
           <p>Rp ${p.price.toLocaleString()}</p>
-          <a href="detailproduct.php?id=${
-            p.id
-          }" class="btn btn-outline-primary w-100">
+          <a href="detailproduct.php?id=${p.id}" 
+             class="btn btn-outline-primary mt-auto">
             Detail
           </a>
         </div>
@@ -61,9 +39,13 @@ function renderProducts() {
   ).join("");
 }
 
+// =========================
+// RENDER DETAIL PRODUK
+// =========================
 function renderDetail() {
   const el = document.getElementById("product-detail");
   if (!el) return;
+
   const id = new URLSearchParams(location.search).get("id");
   const p = PRODUCTS.find((p) => p.id === id);
   if (!p) return;
@@ -75,8 +57,9 @@ function renderDetail() {
       </div>
       <div class="col-md-6">
         <h2>${p.name}</h2>
-        <p>Rp ${p.price.toLocaleString()}</p>
-        <button class="btn btn-primary" onclick="addToCart('${p.id}')">
+        <p class="fs-4">Rp ${p.price.toLocaleString()}</p>
+        <button class="btn btn-primary"
+          onclick="addToCart('${p.id}')">
           Tambah ke Keranjang
         </button>
       </div>
@@ -84,21 +67,5 @@ function renderDetail() {
   `;
 }
 
-function renderCart() {
-  const el = document.getElementById("cart-list");
-  if (!el) return;
-  const cart = getCart();
-  el.innerHTML = cart.length
-    ? cart
-        .map((i) => {
-          const p = PRODUCTS.find((p) => p.id === i.id);
-          return `<div>${p.name} x ${i.qty}</div>`;
-        })
-        .join("")
-    : "<p>Keranjang kosong</p>";
-}
-
 renderProducts();
 renderDetail();
-renderCart();
-updateCartBadge();
