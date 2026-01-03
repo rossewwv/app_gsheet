@@ -1,17 +1,35 @@
-const PRODUCTS = [
-  {
-    id: "p1",
-    name: "Kopi Arabika",
-    price: 25000,
-    image: "assets/img/placeholder.png",
-  },
-  {
-    id: "p2",
-    name: "Teh Herbal",
-    price: 15000,
-    image: "assets/img/placeholder.png",
-  },
-];
+// const PRODUCTS = [
+//   {
+//     id: "p1",
+//     name: "Kopi Arabika",
+//     price: 25000,
+//     image: "assets/img/placeholder.png",
+//   },
+//   {
+//     id: "p2",
+//     name: "Teh Herbal",
+//     price: 15000,
+//     image: "assets/img/placeholder.png",
+//   },
+// ];
+let PRODUCTS = [];
+
+async function loadProducts() {
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+
+    console.log("PRODUCTS:", data);
+
+    PRODUCTS = data;
+    renderProducts();
+  } catch (err) {
+    console.error("Gagal load produk", err);
+  }
+}
+
+// loadProducts();
+// updateCartBadge();
 
 // =========================
 // RENDER HOME (INDEX)
@@ -28,7 +46,7 @@ function renderProducts() {
         <div class="card-body d-flex flex-column">
           <h5>${p.name}</h5>
           <p>Rp ${p.price.toLocaleString()}</p>
-          <a href="detailproduct.php?id=${p.id}" 
+          <a href="detailproduct.php?id=${p.id}"
              class="btn btn-outline-primary mt-auto">
             Detail
           </a>
@@ -42,9 +60,11 @@ function renderProducts() {
 // =========================
 // RENDER DETAIL PRODUK
 // =========================
-function renderDetail() {
+async function renderDetail() {
   const el = document.getElementById("product-detail");
   if (!el) return;
+
+  if (!PRODUCTS.length) await loadProducts();
 
   const id = new URLSearchParams(location.search).get("id");
   const p = PRODUCTS.find((p) => p.id === id);
@@ -57,9 +77,9 @@ function renderDetail() {
       </div>
       <div class="col-md-6">
         <h2>${p.name}</h2>
-        <p class="fs-4">Rp ${p.price.toLocaleString()}</p>
+        <p>Rp ${p.price.toLocaleString()}</p>
         <button class="btn btn-primary"
-          onclick="addToCart('${p.id}')">
+                onclick="addToCart('${p.id}')">
           Tambah ke Keranjang
         </button>
       </div>
@@ -69,3 +89,5 @@ function renderDetail() {
 
 renderProducts();
 renderDetail();
+loadProducts();
+updateCartBadge();
