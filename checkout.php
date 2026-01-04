@@ -31,7 +31,7 @@
       </form>
     </div>
 
-    <!-- RINGKASAN CART + AGREEMENT -->
+    <!-- RINGKASAN PESANAN + AGREEMENT -->
     <div class="col-md-6">
       <h4>Ringkasan Pesanan</h4>
 
@@ -46,31 +46,21 @@
 
         <!-- AGREEMENT -->
         <div class="form-check mb-2">
-          <input class="form-check-input"
-                 type="checkbox"
-                 id="agree-terms"
-                 required
-                 form="checkout-form">
+          <input class="form-check-input" type="checkbox" id="agree-terms" required form="checkout-form">
           <label class="form-check-label" for="agree-terms">
             I agree to the <a href="#" target="_blank">Terms of Use</a>
           </label>
         </div>
 
         <div class="form-check mb-3">
-          <input class="form-check-input"
-                 type="checkbox"
-                 id="agree-marketing"
-                 form="checkout-form">
+          <input class="form-check-input" type="checkbox" id="agree-marketing" form="checkout-form">
           <label class="form-check-label" for="agree-marketing">
-            I agree that my email and phone number may be used to receive
-            newsletters or marketing messages, which I can unsubscribe from at any time.
+            I agree that my email and phone number may be used to receive newsletters or marketing messages, which I can unsubscribe from at any time.
           </label>
         </div>
 
         <!-- SUBMIT BUTTON -->
-        <button class="btn btn-success w-100"
-                type="submit"
-                form="checkout-form">
+        <button class="btn btn-success w-100" type="submit" form="checkout-form">
           Buat Pesanan
         </button>
       </div>

@@ -9,22 +9,20 @@
         <tr>
           <th>Produk</th>
           <th>Harga</th>
-          <th style="width:120px">Qty</th>
-          <th>Total</th>
+          <th>Qty</th>
+          <th>Subtotal</th>
           <th>Aksi</th>
         </tr>
       </thead>
-
-      <!-- WAJIB ADA -->
-      <tbody id="cart-table"></tbody>
+      <tbody id="cart-table">
+        <!-- Produk akan di-render oleh cart.js -->
+      </tbody>
     </table>
   </div>
 
   <div class="text-end">
     <h4 id="cart-total"></h4>
-    <a href="checkout.php" class="btn btn-success mt-2">
-      Checkout
-    </a>
+    <a href="checkout.php" class="btn btn-success mt-2">Checkout</a>
   </div>
 </main>
 
