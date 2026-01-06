@@ -1,7 +1,14 @@
 <?php include 'partials/header.php'; ?>
 
 <main class="container my-5 pt-5 flex-grow-1">
-  <h1 class="text-center mb-4">Produk UMKM</h1>
+    <!-- <button
+    class="btn btn-outline-secondary btn-sm"
+    onclick="forceRefreshProducts()">
+    🔄 Refresh Produk
+  </button> -->
+
+
+  <h1 class="text-center mb-4">Welcome</h1>
   
   <div class="row" id="product-list">
     <!-- Produk akan muncul di sini -->

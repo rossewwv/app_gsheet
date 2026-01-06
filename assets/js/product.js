@@ -50,25 +50,28 @@ async function loadProducts() {
 // =========================
 // RENDER HOME (index.php)
 // =========================
-
 function renderProducts() {
-  const container = document.getElementById("product-list");
-  const template = document.getElementById("template-product-card");
+  const el = document.getElementById("product-list");
+  if (!el) return; // ⬅️ PENTING
 
-  container.innerHTML = ""; // clear skeleton
-
-  PRODUCTS.forEach((p) => {
-    const clone = template.content.cloneNode(true);
-
-    clone.querySelector("img").src = p.image;
-    clone.querySelector("img").alt = p.name;
-    clone.querySelector(".product-name").textContent = p.name;
-    clone.querySelector(".product-price").textContent =
-      "Rp " + p.price.toLocaleString();
-    clone.querySelector(".detail-btn").href = "detailproduct.php?id=" + p.id;
-
-    container.appendChild(clone);
-  });
+  el.innerHTML = PRODUCTS.map(
+    (p) => `
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img src="${p.image}" class="card-img-top">
+        <div class="card-body d-flex flex-column">
+          <h5>${p.name}</h5>
+          <p>Rp ${p.price.toLocaleString()}</p>
+          <a href="detailproduct.php?id=${
+            p.id
+          }" class="btn btn-outline-primary mt-auto">
+            Detail
+          </a>
+        </div>
+      </div>
+    </div>
+  `
+  ).join("");
 }
 
 // =========================
@@ -105,10 +108,7 @@ function renderDetail() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  loadProducts();
-  renderDetail();
+  if (document.getElementById("product-list")) {
+    loadProducts();
+  }
 });
-
-renderProducts();
-renderDetail();
-loadProducts();

@@ -1,17 +1,17 @@
 <?php include 'partials/header.php'; ?>
 
 <main class="container my-5 pt-5 flex-grow-1">
-  <h1 class="mb-4">Keranjang Belanja</h1>
+  <h1 class="mb-4">Cart</h1>
 
   <div class="table-responsive">
     <table class="table table-bordered align-middle">
       <thead class="table-light">
         <tr>
-          <th>Produk</th>
-          <th>Harga</th>
+          <th>Product</th>
+          <th>Price</th>
           <th>Qty</th>
           <th>Subtotal</th>
-          <th>Aksi</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody id="cart-table">

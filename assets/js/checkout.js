@@ -14,10 +14,9 @@ function renderCheckout() {
     return;
   }
 
-  // Jika PRODUCTS belum ada, ambil dari localStorage
-  if (!PRODUCTS.length) {
-    const cached = localStorage.getItem("products");
-    if (cached) PRODUCTS = JSON.parse(cached);
+  if (!Array.isArray(PRODUCTS) || !PRODUCTS.length) {
+    list.innerHTML = `<p class="text-danger">Produk belum dimuat</p>`;
+    return;
   }
 
   let total = 0;
@@ -49,41 +48,30 @@ function renderCheckout() {
 function submitOrder(e) {
   e.preventDefault();
 
-  // Validasi terms
-  if (!document.getElementById("agree-terms").checked) {
-    alert("Anda harus menyetujui Terms of Use");
+  const nameEl = document.getElementById("cust-name");
+  const emailEl = document.getElementById("cust-email");
+  const phoneEl = document.getElementById("cust-phone");
+
+  if (!nameEl || !emailEl || !phoneEl) {
+    console.warn("Checkout form not found");
     return;
   }
 
   const cart = getCart();
   if (!cart.length) {
-    alert("Keranjang kosong!");
+    alert("Cart is empty");
     return;
   }
 
-  const order = {
-    customer: {
-      name: document.getElementById("cust-name").value,
-      email: document.getElementById("cust-email").value,
-      phone: document.getElementById("cust-phone").value,
-      address: document.getElementById("cust-address").value || "-",
-      marketingConsent: document.getElementById("agree-marketing").checked,
-    },
-    items: cart,
-    date: new Date().toISOString(),
+  const payload = {
+    name: nameEl.value,
+    email: emailEl.value,
+    phone: phoneEl.value,
+    marketing: document.getElementById("agree-marketing")?.checked || false,
+    created_at: new Date().toISOString(),
   };
 
-  console.log("ORDER:", order);
-
-  // TODO: Kirim ke Google Sheet / API
-  alert("Pesanan berhasil dibuat!");
-
-  // Bersihkan cart
-  localStorage.removeItem("cart");
-  updateCartBadge();
-
-  // Redirect ke halaman utama
-  location.href = "index.php";
+  console.log("ORDER:", payload);
 }
 
 // INIT

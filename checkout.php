@@ -6,11 +6,11 @@
   <div class="row">
     <!-- FORM CUSTOMER -->
     <div class="col-md-6 mb-4">
-      <h4>Data Pembeli</h4>
+      <h4>Customer</h4>
 
       <form id="checkout-form" onsubmit="submitOrder(event)">
         <div class="mb-3">
-          <label class="form-label">Nama</label>
+          <label class="form-label">Name</label>
           <input type="text" id="cust-name" class="form-control" required>
         </div>
 
@@ -20,14 +20,14 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label">Nomor HP</label>
+          <label class="form-label">Number Phone</label>
           <input type="tel" id="cust-phone" class="form-control" required>
         </div>
 
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <label class="form-label">Alamat (Opsional)</label>
           <textarea id="cust-address" class="form-control" rows="3"></textarea>
-        </div>
+        </div> -->
       </form>
     </div>
 

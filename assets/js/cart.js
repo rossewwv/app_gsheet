@@ -56,10 +56,9 @@ function renderCartTable() {
   const totalEl = document.getElementById("cart-total");
   if (!tbody || !totalEl) return;
 
-  // Ambil PRODUCTS dari localStorage jika belum ada
-  if (!PRODUCTS.length) {
-    const cached = localStorage.getItem("products");
-    if (cached) PRODUCTS = JSON.parse(cached);
+  if (!Array.isArray(PRODUCTS) || !PRODUCTS.length) {
+    console.warn("PRODUCTS belum siap");
+    return;
   }
 
   const cart = getCart();

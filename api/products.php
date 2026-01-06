@@ -1,23 +1,35 @@
 <?php
 header("Content-Type: application/json");
 
-// Lokasi cache JSON di server
-$cacheFile = __DIR__ . "/cache/products.json"; // pastikan folder api/cache ada
-$cacheTime = 60; // cache 60 detik
+// =========================
+// CONFIG
+// =========================
+$cacheDir  = __DIR__ . "/cache";
+$cacheFile = $cacheDir . "/products.json";
+$cacheTime = 60; // detik
+$force     = isset($_GET['force']);
 
-if (file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTime)) {
-    // Pakai cache
+// =========================
+// USE CACHE (jika tidak force)
+// =========================
+if (
+    !$force &&
+    file_exists($cacheFile) &&
+    (time() - filemtime($cacheFile) < $cacheTime)
+) {
     echo file_get_contents($cacheFile);
     exit;
 }
 
-// URL Google Apps Script
-$apiUrl = "https://script.google.com/macros/s/AKfycbyAX58lxM3wyJuFBFC_0ob9zCO0DYgY7FQyZSoGwZDz04DeE7_hskpsiTZXiClvwfcy/exec";
+// =========================
+// FETCH FROM GOOGLE APPS SCRIPT
+// =========================
+$apiUrl = "https://script.google.com/macros/s/AKfycbx8rH0wBQQwBsAsReUGhZZNKh5FrFSGDTx3id8e9Ae5mAnOYJAqZSjnRjJnOrdaV-RV/exec";
 
-// Fetch data dari GAS
 $response = @file_get_contents($apiUrl);
 
 if ($response === false) {
+    http_response_code(500);
     echo json_encode([
         "error" => true,
         "message" => "Gagal mengambil data produk dari Google Sheet"
@@ -25,11 +37,15 @@ if ($response === false) {
     exit;
 }
 
-// Simpan ke cache
-if (!file_exists(__DIR__ . "/cache")) {
-    mkdir(__DIR__ . "/cache", 0777, true);
+// =========================
+// SAVE CACHE
+// =========================
+if (!file_exists($cacheDir)) {
+    mkdir($cacheDir, 0777, true);
 }
 file_put_contents($cacheFile, $response);
 
-// Kirim ke frontend
+// =========================
+// OUTPUT
+// =========================
 echo $response;
